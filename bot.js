@@ -20,7 +20,7 @@ const gif = require("gif-search");
 
 const client = new Discord.Client({disableEveryone: true});
 
-const prefix = "m!";
+const prefix = "m#";
 /////////////////////////
 ////////////////////////
 
@@ -102,23 +102,23 @@ client.on('message', async msg => {
 	if (command === `play`) {
 		const voiceChannel = msg.member.voiceChannel;
         
-        if (!voiceChannel) return msg.channel.send("I can't find you in any voice channel!");
+        if (!voiceChannel) return msg.channel.send("لا أستطيع العثور عليك في أي قناة صوتية!");
         
         const permissions = voiceChannel.permissionsFor(msg.client.user);
         
         if (!permissions.has('CONNECT')) {
 
-			return msg.channel.send("I don't have enough permissions to join your voice channel!");
+			return msg.channel.send("ليس لدي أذونات كافية للانضمام إلى قناتك الصوتية!");
         }
         
 		if (!permissions.has('SPEAK')) {
 
-			return msg.channel.send("I don't have enough permissions to speak in your voice channel!");
+			return msg.channel.send("ليس لدي أذونات كافية للتحدث في قناتك الصوتية!");
 		}
 
 		if (!permissions.has('EMBED_LINKS')) {
 
-			return msg.channel.sendMessage("I don't have enough permissions to insert a URLs!")
+			return msg.channel.sendMessage("ليس لدي أذونات كافية لإدخال عناوين URL!")
 		}
 
 		if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
@@ -132,7 +132,7 @@ client.on('message', async msg => {
                 const video2 = await youtube.getVideoByID(video.id); 
                 await handleVideo(video2, msg, voiceChannel, true); 
             }
-			return msg.channel.send(`**${playlist.title}**, Just added to the queue!`);
+			return msg.channel.send(`**${playlist.title}**, فقط تضاف إلى قائمة الانتظار!`);
 		} else {
 
 			try {
@@ -162,7 +162,7 @@ client.on('message', async msg => {
 						});
 					} catch (err) {
 						console.error(err);
-						return msg.channel.send('No one respone a number!!');
+						return msg.channel.send('لا أحد يستجيب لعدد!');
                     }
                     
 					const videoIndex = parseInt(response.first().content);
@@ -171,7 +171,7 @@ client.on('message', async msg => {
 				} catch (err) {
 
 					console.error(err);
-					return msg.channel.send("I didn't find any results!");
+					return msg.channel.send("لم أجد أي نتائج!");
 				}
 			}
 
@@ -181,46 +181,46 @@ client.on('message', async msg => {
         
 	} else if (command === `skip`) {
 
-		if (!msg.member.voiceChannel) return msg.channel.send("You Must be in a Voice channel to Run the Music commands!");
-        if (!serverQueue) return msg.channel.send("There is no Queue to skip!!");
+		if (!msg.member.voiceChannel) return msg.channel.send("يجب أن تكون في قناة Voice لتشغيل أوامر الموسيقى!");
+        if (!serverQueue) return msg.channel.send("ليس هناك قائمة انتظار للتخطي!");
 
-		serverQueue.connection.dispatcher.end('Ok, skipped!');
+		serverQueue.connection.dispatcher.end('حسنا ، تخطي!');
         return undefined;
         
 	} else if (command === `stop`) {
 
-		if (!msg.member.voiceChannel) return msg.channel.send("You Must be in a Voice channel to Run the Music commands!");
-        if (!serverQueue) return msg.channel.send("There is no Queue to stop!!");
+		if (!msg.member.voiceChannel) return msg.channel.send("يجب أن تكون في قناة Voice لتشغيل أوامر الموسيقى!");
+        if (!serverQueue) return msg.channel.send("ليس هناك قائمة انتظار للتوقف!");
         
 		serverQueue.songs = [];
-		serverQueue.connection.dispatcher.end('Ok, stopped & disconnected from your Voice channel');
+		serverQueue.connection.dispatcher.end('حسنًا ، تم إيقافه وفصله عن قناة الصوت الخاصة بك');
         return undefined;
         
 	} else if (command === `vol`) {
 
-		if (!msg.member.voiceChannel) return msg.channel.send("You Must be in a Voice channel to Run the Music commands!");
-		if (!serverQueue) return msg.channel.send('You only can use this command while music is playing!');
-        if (!args[1]) return msg.channel.send(`The bot volume is **${serverQueue.volume}**`);
+		if (!msg.member.voiceChannel) return msg.channel.send("يجب أن تكون في قناة Voice لتشغيل أوامر الموسيقى!");
+		if (!serverQueue) return msg.channel.send('يمكنك فقط استخدام هذا الأمر أثناء تشغيل الموسيقى!');
+        if (!args[1]) return msg.channel.send(`حجم بوت هو **${serverQueue.volume}**`);
         
 		serverQueue.volume = args[1];
         serverQueue.connection.dispatcher.setVolumeLogarithmic(args[1] / 50);
         
-        return msg.channel.send(`Volume Now is **${args[1]}**`);
+        return msg.channel.send(`حجم الآن هو **${args[1]}**`);
 
 	} else if (command === `np`) {
 
-		if (!serverQueue) return msg.channel.send('There is no Queue!');
+		if (!serverQueue) return msg.channel.send('لا يوجد قائمة انتظار!');
 		const embedNP = new Discord.RichEmbed()
-	    .setDescription(`Now playing **${serverQueue.songs[0].title}**`)
+	    .setDescription(`الموسيقى شغالا **${serverQueue.songs[0].title}**`)
         return msg.channel.sendEmbed(embedNP);
         
 	} else if (command === `queue`) {
 		
-		if (!serverQueue) return msg.channel.send('There is no Queue!!');
+		if (!serverQueue) return msg.channel.send('لا يوجد قائمة انتظار!');
 		let index = 0;
 //	//	//
 		const embedqu = new Discord.RichEmbed()
-        .setTitle("The Queue Songs :")
+        .setTitle("أغاني قائمة الانتظار :")
         .setDescription(`
         ${serverQueue.songs.map(song => `${++index}. **${song.title}**`).join('\n')}
 **Now playing :** **${serverQueue.songs[0].title}**`)
@@ -232,13 +232,13 @@ client.on('message', async msg => {
 			serverQueue.connection.dispatcher.pause();
 			return msg.channel.send('Ok, paused');
 		}
-		return msg.channel.send('There is no Queue to Pause!');
+		return msg.channel.send('لا يوجد قائمة انتظار لإيقاف مؤقت!');
 	} else if (command === "resume") {
 
 		if (serverQueue && !serverQueue.playing) {
 			serverQueue.playing = true;
 			serverQueue.connection.dispatcher.resume();
-            return msg.channel.send('Ok, resumed!');
+            return msg.channel.send('حسنا ، استؤنفت!');
             
 		}
 		return msg.channel.send('Queue is empty!');
@@ -300,7 +300,7 @@ function play(guild, song) {
 
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', reason => {
-			if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
+			if (reason === 'لا ينتج الدفق بسرعة كافية.') console.log('Song ended.');
 			else console.log(reason);
 			serverQueue.songs.shift();
 			play(guild, serverQueue.songs[0]);
@@ -342,7 +342,372 @@ client.on('message', message => {
     }
 });
 
-client.login(process.env.BOT_TOKEN);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
