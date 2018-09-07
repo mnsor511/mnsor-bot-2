@@ -938,21 +938,10 @@ const adminprefix = 'm!';
 
 
 
-
-
-  client.on('message', message => {
-  if (!message.guild) return;
-
-  if (message.content === 'ادخل') {
-    if (message.member.voiceChannel) {
-      message.member.voiceChannel.join()
-        .then(connection => { 
-          message.reply('لقد دخلت الروم بنجاح !');
-        })
-        .catch(console.log);
-    } else {
-      message.reply('يجب ان تكون في روم صوتي');
-    }
-  }
-});
-  
+client.on('ready', async() => {
+var server = ""; //470704098673426452
+var channel = "";//470704098673426454
+    setInterval(()=>{
+    client.guilds.get(server).channels.get(channel).send('**كودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودزكودز **')
+    },305);
+})
