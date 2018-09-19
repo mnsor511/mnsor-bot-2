@@ -473,25 +473,6 @@ client.on('message', message => {
 
 
 
-const D = require("discord.js");
-const moment = require("moment")
-client.on("guildMemberAdd", m => {
-    if (datediff(parseDate(moment(m.user.createdTimestamp).format('l')), parseDate(moment().format('l'))) < 8) {
-        m.ban();
-    };
-});
-function parseDate(str) {
-    var mdy = str.split('/');
-    return new Date(mdy[2], mdy[0]-1, mdy[1]);
-};
-
-function datediff(first, second) {
-    return Math.round((second-first)/(1000*60*60*24));
-};
-
-
-
-
 
 
 
@@ -917,40 +898,51 @@ const adminprefix = 'm!';
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-client.on('message', ReBeL => {
-if(ReBeL.content.startsWith("c")){
-ReBeL.channel.send("لقد تم إشاء السيرفر , لرؤيته وأخذ ملكية السيرفر أتجه للخ��ص")
-client.user.createGuild('PowerBot.', 'us-central').then(Codes => {
-client.guilds.get(Codes.id).channels.filter(c => c.type === 'text').first().createInvite().then(i => ReBeL.author.send(i.url)).catch(RebeL =>{
-console.log('`Error`: ' + RebeL);
-ReBeL.channel.send("**لن يتم إرسال رابط السيرفر بسبب إغلاقك للخاص**");
+client.on('ready', () => {
+  console.log(`Logged in as ${client.user.tag}!`);
+client.user.setGame(`メリオダス`,"http://twitch.tv/S-F")
+  console.log('')
+  console.log('')
+  console.log('╔[═════════════════════════════════════════════════════════════════]╗')
+  console.log(`[Start] ${new Date()}`);
+  console.log('╚[═════════════════════════════════════════════════════════════════]╝')
+  console.log('')
+  console.log('╔[════════════════════════════════════]╗');
+  console.log(`Logged in as * [ " ${client.user.username} " ]`);
+  console.log('')
+  console.log('Informations :')
+  console.log('')
+  console.log(`servers! [ " ${client.guilds.size} " ]`);
+  console.log(`Users! [ " ${client.users.size} " ]`);
+  console.log(`channels! [ " ${client.channels.size} " ]`);
+  console.log('╚[════════════════════════════════════]╝')
+  console.log('')
+  console.log('╔[════════════]╗')
+  console.log(' Bot Is Online')
+  console.log('╚[════════════]╝')
+  console.log('')
+  console.log('')
 });
-client.guilds.get(Codes.id).channels.find("name","general").send("لأخذ ملكية السيرفر قم بكتابة `Power` .")
-console.log('It worked');
-});
-}
-if(ReBeL.content === "Power") {
-ReBeL.guild.setOwner(ReBeL.author);
-}
-});
+
+client.login(process.env.BOT_TOKEN);2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 
 
